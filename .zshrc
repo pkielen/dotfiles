@@ -75,9 +75,12 @@ ZSH_THEME="agnoster"
 # Custom plugins may be added to $ZSH_CUSTOM/plugins/
 # Example format: plugins=(rails git textmate ruby lighthouse)
 # Add wisely, as too many plugins slow down shell startup.
+source /usr/share/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 plugins=(git
          zsh-autosuggestions
-         zsh-syntax-highlighting)
+         zsh-syntax-highlighting
+         zsh-dircolors-nord
+        )
 
 source $ZSH/oh-my-zsh.sh
 
@@ -110,27 +113,27 @@ alias run="/home/s0001051/src/run.py"
 alias push="run format; git add -u && run format && git commit --amend --no-edit && git review"
 
 
-source ~/powerlevel10k/powerlevel10k.zsh-theme
+source ~/.oh-my-zsh/custom/themes/powerlevel10k/powerlevel10k.zsh-theme
 
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
-source /home/s0001051/.fzf/shell/key-bindings.zsh
-source /home/s0001051/.fzf/shell/completion.zsh
 export TERM=xterm-256color
 export TERM=xterm-256color
 alias clangd="clangd-12"
 
-
-autoload bashcompinit
-bashcompinit
+# fzf
+source /usr/share/doc/fzf/examples/key-bindings.zsh
+source /usr/share/doc/fzf/examples/completion.zsh
 
 # Python argcomplete
-source ~/.bash_completion.d/python-argcomplete.sh
-
+autoload bashcompinit
+bashcompinit
+#source ~/.bash_completion.d/python-argcomplete.sh
 eval "$(register-python-argcomplete /home/s0001051/src/run.py)"
 
 # Add paths
 export PATH=$PATH:/usr/local/go/bin
+cd

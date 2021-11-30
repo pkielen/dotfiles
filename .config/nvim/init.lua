@@ -54,8 +54,10 @@ paq {'tpope/vim-obsession'}
 -- Multiline comments
 paq {'terrortylor/nvim-comment'}
 
--- Git info in the gutter
-paq {'mhinz/vim-signify'}
+-- Git integration
+-- paq {'mhinz/vim-signify'}
+paq {'nvim-lua/plenary.nvim'}
+paq {'tanvirtin/vgit.nvim'}
 
 -- Note taking
 paq {'vimwiki/vimwiki'}
@@ -87,8 +89,8 @@ api.nvim_set_keymap("n", "<Leader>j", "<C-w>j", {})
 api.nvim_set_keymap("n", "<Leader>k", "<C-w>k", {})
 api.nvim_set_keymap("n", "<Leader>l", "<C-w>l", {})
 api.nvim_set_keymap("n", "<Leader>t", ":ClangdSwitchSourceHeader<Enter>", {})
-api.nvim_set_keymap("n", "<C-j>", "}", {})
-api.nvim_set_keymap("n", "<C-k>", "{", {})
+api.nvim_set_keymap("n", "<C-u>", "}", {})
+api.nvim_set_keymap("n", "<C-i>", "{", {})
 
 -- Map tab
 local t = function(str)
@@ -142,6 +144,7 @@ require'nvim-tree'.setup {
     }
 }
 api.nvim_set_keymap("n", "<Leader>d", ":NvimTreeFindFile<Enter>", {})
+api.nvim_set_keymap("n", "<Leader>e", ":NvimTreeClose<Enter>", {})
 
 --== nvim-lspconfig ==--
 local nvim_lsp = require('lspconfig')
@@ -306,7 +309,81 @@ cmd[[autocmd BufFilePost *.cpp,*.h :lua vim.api.nvim_buf_set_option(0, "comments
 api.nvim_set_keymap("n", "<Leader>c", ":CommentToggle<Enter>", {})
 api.nvim_set_keymap("v", "<Leader>c", ":CommentToggle<Enter>", {})
 
-
---== vim-signify ==-- 
-opt.updatetime = 100
-
+--== vgit ==--
+opt.updatetime = 50
+local vgit = require('vgit')
+vgit.setup({
+    debug = false,
+    keymaps = {
+        ['n <C-k>'] = 'hunk_up',
+        ['n <C-j>'] = 'hunk_down',
+        ['n <leader>g'] = 'actions',
+        ['n <leader>gs'] = 'buffer_hunk_stage',
+        ['n <leader>gr'] = 'buffer_hunk_reset',
+        ['n <leader>gp'] = 'buffer_hunk_preview',
+        ['n <leader>gb'] = 'buffer_blame_preview',
+        ['n <leader>gf'] = 'buffer_diff_preview',
+        ['n <leader>gh'] = 'buffer_history_preview',
+        ['n <leader>gu'] = 'buffer_reset',
+        ['n <leader>gg'] = 'buffer_gutter_blame_preview',
+        ['n <leader>gj'] = 'buffer_unstage',
+        ['n <leader>gk'] = 'buffer_stage',
+        ['n <leader>gd'] = 'project_diff_preview',
+        ['n <leader>gq'] = 'project',
+        ['n <leader>gx'] = 'toggle_diff_preference',
+    },
+    controller = {
+        hunks_enabled = true,
+        blames_enabled = true,
+        diff_strategy = 'index',
+        diff_preference = 'horizontal',
+        predict_hunk_signs = true,
+        predict_hunk_throttle_ms = 300,
+        predict_hunk_max_lines = 50000,
+        blame_line_throttle_ms = 150,
+        action_delay_ms = 300,
+    },
+    hls = vgit.themes.tokyonight,
+    sign = {
+        VGitViewSignAdd = {
+            name = 'DiffAdd',
+            line_hl = 'DiffAdd',
+            text_hl = nil,
+            num_hl = nil,
+            icon = nil,
+            text = '',
+        },
+        VGitViewSignRemove = {
+            name = 'DiffDelete',
+            line_hl = 'DiffDelete',
+            text_hl = nil,
+            num_hl = nil,
+            icon = nil,
+            text = '',
+        },
+        VGitSignAdd = {
+            name = 'VGitSignAdd',
+            text_hl = 'VGitSignAdd',
+            num_hl = nil,
+            icon = nil,
+            line_hl = nil,
+            text = '┃',
+        },
+        VGitSignRemove = {
+            name = 'VGitSignRemove',
+            text_hl = 'VGitSignRemove',
+            num_hl = nil,
+            icon = nil,
+            line_hl = nil,
+            text = '┃',
+        },
+        VGitSignChange = {
+            name = 'VGitSignChange',
+            text_hl = 'VGitSignChange',
+            num_hl = nil,
+            icon = nil,
+            line_hl = nil,
+            text = '┃',
+        },
+    },
+})
